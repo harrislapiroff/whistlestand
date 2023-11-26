@@ -22,7 +22,7 @@ module mount_outer (
             d = post_d,
             h = post_h,
             pitch = 4,
-            bevel1 = true,
+            bevel1 = 1,
             bevel2 = "reverse"
         )
             attach(TOP)
