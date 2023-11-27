@@ -194,7 +194,7 @@ module middle_leg(
             cap_inset = cap_inset,
             post_d = post_d,
             post_h = post_h,
-            post_rotate = 60
+            post_rotate = 120
         )
         {
             // Remove 2/3 of place where it will join the other legs
@@ -301,7 +301,7 @@ module top_leg(
             cap_inset = cap_inset,
             post_d = post_d,
             post_h = post_h,
-            post_rotate = 120
+            post_rotate = 240
         )
         {
             // Remove 2/3 of place where it will join the other legs
