@@ -11,6 +11,8 @@ $slop = 0.1;
 $fs = $preview ? 2 : 0.5;
 $fa = $preview ? 20 : 2;
 
+render_connected = false;
+
 module leg_solid(
     n = 4,
     node_d = 50,
@@ -100,17 +102,22 @@ module bottom_leg(
     cap_inset = 1,
     post_d = 25,
     post_h = 9,
+    cutaway_chamfer = 0.5,
+    alignment_post_d = 7,
     eps = 0.01,
     anchor, spin, orient
 ) {
     slop = get_slop();
-    
+    solid_height = post_h + cap_inset;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_h = solid_height * 2 / 3 + eps;
+
     attachable(
         anchor, spin, orient,
         size = [
             node_spread * (n - 1) + node_d,
             node_d,
-            post_h + cap_inset
+            solid_height
         ]
     ) {
         diff("remove", "keep")
@@ -128,36 +135,25 @@ module bottom_leg(
             tag("remove")
             position(LEFT + TOP)
             up(eps)
-            left(eps + slop)
+            left(eps + slop + cutaway_chamfer)
             cyl(
-                d = node_d + 2 * eps + 2 * slop,
-                h = (post_h + cap_inset) * 2 / 3 + eps,
+                d = cutaway_d,
+                h = cutaway_h,
+                chamfer1 = cutaway_chamfer,
                 anchor = LEFT + TOP
             );
 
-            // Pegs to join the legs
+            // Post to align the other legs
             tag("keep")
             position(LEFT + BOTTOM)
-            right(node_d / 2)
-            up((post_h + cap_inset) / 3 - eps)
-            zrot(-90)
-            pegs(
-                h = 1,
-                d = 3,
-                spread_d = (node_d + post_d) / 2,
+            right(cutaway_d - cutaway_chamfer - slop - eps)
+            up(solid_height / 3 - eps)
+            cyl(
+                d = alignment_post_d,
+                h = cutaway_h,
+                chamfer1 = -cutaway_chamfer,
+                chamfer2 = cutaway_chamfer,
                 anchor = BOTTOM
-            );
-
-            tag("remove")
-            position(LEFT + BOTTOM)
-            right(node_d / 2)
-            up((post_h + cap_inset) / 3 + eps)
-            zrot(90)
-            pegs(
-                h = 1,
-                d = 3 + slop * 2,
-                spread_d = (node_d + post_d) / 2,
-                anchor = TOP
             );
         }
         children();
@@ -172,17 +168,22 @@ module middle_leg(
     cap_inset = 1,
     post_d = 25,
     post_h = 9,
+    cutaway_chamfer = 0.5,
+    alignment_post_d = 7,
     eps = 0.01,
     anchor, spin, orient
 ) {
     slop = get_slop();
-    
+    solid_height = post_h + cap_inset;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_h = (post_h + cap_inset) / 3 + eps;
+
     attachable(
         anchor, spin, orient,
         size = [
             node_spread * (n - 1) + node_d,
             node_d,
-            post_h + cap_inset
+            solid_height
         ]
     ) {
         diff("remove", "keep")
@@ -201,70 +202,35 @@ module middle_leg(
             tag("remove")
             position(LEFT + BOTTOM)
             down(eps)
-            left(eps + slop)
+            left(eps + slop + cutaway_chamfer)
             cyl(
-                d = node_d + 2 * eps + 2 * slop,
-                h = (post_h + cap_inset) / 3 + eps,
+                d = cutaway_d,
+                h = cutaway_h,
+                chamfer2 = cutaway_chamfer,
                 anchor = LEFT + BOTTOM
             );
 
             tag("remove")
             position(LEFT + TOP)
             up(eps)
-            left(eps + slop)
+            left(eps + slop + cutaway_chamfer)
             cyl(
-                d = node_d + 2 * eps + 2 * slop,
-                h = (post_h + cap_inset) / 3 + eps,
+                d = cutaway_d,
+                h = cutaway_h,
+                chamfer1 = cutaway_chamfer,
                 anchor = LEFT + TOP
             );
 
-            // Pegs to join the legs
-            tag("keep")
-            position(LEFT + BOTTOM)
-            right(node_d / 2)
-            up((post_h + cap_inset) / 3 - 1 + eps)
-            zrot(90)
-            pegs(
-                h = 1,
-                d = 3,
-                spread_d = (node_d + post_d) / 2,
-                anchor = BOTTOM
-            );
-
+            // Cut out a slot for the alignment post
             tag("remove")
+            up(solid_height / 3 - eps)
             position(LEFT + BOTTOM)
-            right(node_d / 2)
-            up((post_h + cap_inset) / 3 - eps)
-            zrot(-90)
-            pegs(
-                h = 1,
-                d = 3 + slop * 2,
-                spread_d = (node_d + post_d) / 2,
+            zrot(300, cp = [node_d / 2, 0, 0])
+            cyl(
+                d = alignment_post_d + slop * 2,
+                h = cutaway_h + eps,
+                chamfer1 = -cutaway_chamfer,
                 anchor = BOTTOM
-            );
-
-            tag("keep")
-            position(LEFT + TOP)
-            right(node_d / 2)
-            down((post_h + cap_inset) / 3 - 1 + eps)
-            zrot(90)
-            pegs(
-                h = 1,
-                d = 3,
-                spread_d = (node_d + post_d) / 2,
-                anchor = TOP
-            );
-
-            tag("remove")
-            position(LEFT + TOP)
-            right(node_d / 2)
-            down((post_h + cap_inset) / 3 - eps)
-            zrot(-90)
-            pegs(
-                h = 1,
-                d = 3 + slop * 2,
-                spread_d = (node_d + post_d) / 2,
-                anchor = TOP
             );
         }
         children();
@@ -279,17 +245,22 @@ module top_leg(
     cap_inset = 1,
     post_d = 25,
     post_h = 9,
+    cutaway_chamfer = 0.5,
+    alignment_post_d = 7,
     eps = 0.01,
     anchor, spin, orient
 ) {
     slop = get_slop();
+    solid_height = post_h + cap_inset;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_h = (post_h + cap_inset) * 2 / 3 + eps;
     
     attachable(
         anchor, spin, orient,
         size = [
             node_spread * (n - 1) + node_d,
             node_d,
-            post_h + cap_inset
+            solid_height
         ]
     ) {
         diff("remove", "keep")
@@ -310,33 +281,21 @@ module top_leg(
             down(eps)
             left(eps + slop)
             cyl(
-                d = node_d + 2 * eps + 2 * slop,
-                h = (post_h + cap_inset) * 2 / 3 + eps,
+                d = cutaway_d,
+                h = cutaway_h,
+                chamfer2 = cutaway_chamfer,
                 anchor = LEFT + BOTTOM
             );
 
-            // Pegs to join the legs
-            tag("keep")
-            position(LEFT + TOP)
-            right(node_d / 2)
-            down((post_h + cap_inset) / 3 - eps)
-            zrot(-90)
-            pegs(
-                h = 1,
-                d = 3,
-                spread_d = (node_d + post_d) / 2,
-                anchor = TOP
-            );
-
+            // Cut out a slot for the alignment post
             tag("remove")
-            position(LEFT + TOP)
-            right(node_d / 2)
-            down((post_h + cap_inset) / 3 + eps)
-            zrot(90)
-            pegs(
-                h = 1,
-                d = 3 + slop * 2,
-                spread_d = (node_d + post_d) / 2,
+            up(solid_height / 3 - eps)
+            position(LEFT + BOTTOM)
+            zrot(60, cp = [node_d / 2, 0, 0])
+            cyl(
+                d = alignment_post_d + slop * 2,
+                h = cutaway_h + eps,
+                chamfer2 = -cutaway_chamfer,
                 anchor = BOTTOM
             );
         }
@@ -364,25 +323,53 @@ module pegs(
     }
 }
 
-top_leg(
-    n = 2,
-    node_d = 40,
-    node_spread = 50,
-    anchor = BOTTOM + LEFT
-);
+if (render_connected) {
+    color("red")
+    right(25)
+    top_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50
+    );
 
-back(100)
-middle_leg(
-    n = 2,
-    node_d = 40,
-    node_spread = 50,
-    anchor = BOTTOM + LEFT
-);
+    color("green")
+    zrot(120)
+    right(25)
+    middle_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50
+    );
 
-back(200)
-bottom_leg(
-    n = 2,
-    node_d = 40,
-    node_spread = 50,
-    anchor = BOTTOM + LEFT
-);
+    color("blue")
+    zrot(240)
+    right(25)
+    bottom_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50
+    );
+} else {
+    top_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50,
+        anchor = BOTTOM + LEFT
+    );
+
+    back(100)
+    middle_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50,
+        anchor = BOTTOM + LEFT
+    );
+
+    back(200)
+    bottom_leg(
+        n = 2,
+        node_d = 40,
+        node_spread = 50,
+        anchor = BOTTOM + LEFT
+    );
+}
