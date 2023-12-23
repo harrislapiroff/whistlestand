@@ -5,9 +5,9 @@ include <BOSL2/threading.scad>
 
 module mount_outer (
     cap_d = 30,
-    cap_h = 3,
-    post_d = 25,
-    post_h = 30,
+    cap_h = 12.5,
+    post_d = 12.5,
+    post_h = 25,
     anchor, spin, orient
 ) {
     // Cylinder geometry attachable
@@ -39,9 +39,9 @@ module mount_outer (
 
 module mount(
     cap_d = 30,
-    cap_h = 3,
+    cap_h = 12.5,
     post_d = 25,
-    post_h = 30,
+    post_h = 12.5,
     dowel_size = 5 / 8 * INCH,
     crush_rib_size = 1,
     crush_rib_count = 20,
@@ -143,4 +143,4 @@ module dowel_socket(
     }
 }
 
-mount_insert() show_anchors();
+mount();
