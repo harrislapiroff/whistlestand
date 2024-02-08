@@ -1,8 +1,5 @@
 include <BOSL2/std.scad>
 
-$fa = 1;
-$fs = 0.1;
-
 module thread_profile (
     width = 2,
     height = 1,
@@ -57,6 +54,7 @@ module twist_lock_rod_insert (
     d = 10,
     h = 10,
     rod_chamfer_top = 0,
+    rod_chamfer_bottom = 0,
     pins = 2,
     pin_extrude_width = 1.5,
     pin_arc_angle = 60,
@@ -74,7 +72,8 @@ module twist_lock_rod_insert (
     ) {
         cyl(
             d = d,
-            h = 10,
+            h = h,
+            chamfer1 = rod_chamfer_bottom,
             chamfer2 = rod_chamfer_top,
         )
         position(BOTTOM)
@@ -98,7 +97,8 @@ module twist_lock_rod_insert (
 module twist_lock_rod_mask (
     d = 10,
     h = 10,
-    rod_chamfer_top = 1.5,
+    rod_chamfer_bottom = 0,
+    rod_chamfer_top = 0,
     pins = 2,
     pin_extrude_width = 1,
     pin_arc_angle = 60,
@@ -111,10 +111,13 @@ module twist_lock_rod_mask (
 ) {
     slop = get_slop();
     between_angle = 360 / pins - pin_arc_angle;
-    angle_slop = slop * 360 / (d + pin_extrude_width * 2) * PI;
+    outer_circumference = (d + pin_extrude_width * 2);
+    angle_slop = outer_circumference * slop / 360;
+    angle_eps = outer_circumference * eps / 360;
 
     d_ = d + slop * 2;
-    pin_height_ = pin_height + slop;
+    h_ = h;
+    pin_height_ = pin_height + slop * 2;
     pin_from_bottom_ = pin_from_bottom > slop / 2 ? pin_from_bottom - slop / 2 : 0;
 
     attachable(
@@ -125,6 +128,8 @@ module twist_lock_rod_mask (
         union() {
             twist_lock_rod_insert(
                 d = d_,
+                h = h_,
+                rod_chamfer_bottom = -rod_chamfer_bottom,
                 rod_chamfer_top = -rod_chamfer_top,
                 pins = pins,
                 pin_extrude_width = pin_extrude_width,
@@ -137,10 +142,10 @@ module twist_lock_rod_mask (
             position(BOTTOM)
             // Channels
             for (i = [0 : pins - 1]) {
-                zrot(i * between_angle + (i + 1) * pin_arc_angle)
+                zrot(i * between_angle + (i + 1) * pin_arc_angle - angle_eps)
                 up(pin_from_bottom)
                 pie_slice(
-                    h = h - pin_from_bottom_,
+                    h = h_ - pin_from_bottom_,
                     d = d_ + pin_extrude_width * 2,
                     ang = pin_arc_angle + angle_slop * 2,
                 );
@@ -150,5 +155,3 @@ module twist_lock_rod_mask (
         children();
     }
 }
-
-twist_lock_rod_mask(pin_from_bottom = 0) show_anchors();
