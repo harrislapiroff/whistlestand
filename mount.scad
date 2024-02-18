@@ -3,13 +3,21 @@
 include <BOSL2/std.scad>
 include <BOSL2/threading.scad>
 
+$slop = 0.2;
+
+starts = 4;
+pitch = 2;
+
 module mount_outer (
     cap_d = 30,
     cap_h = 12.5,
-    post_d = 12.5,
-    post_h = 25,
+    cap_tex_depth = 0.5,
+    post_d = 25,
+    post_h = 15,
     anchor, spin, orient
 ) {
+    slop = get_slop();
+
     // Cylinder geometry attachable
     attachable(
         anchor, spin, orient,
@@ -21,16 +29,19 @@ module mount_outer (
         threaded_rod(
             d = post_d,
             h = post_h,
-            pitch = 4,
-            bevel1 = 1,
-            bevel2 = "reverse"
+            end_len2 = post_h / 2,
+            starts = starts,
+            pitch = pitch,
+            bevel1 = 0.5,
+            bevel2 = "reverse",
         )
             attach(TOP)
             cyl(
-                d=cap_d,
-                h=cap_h,
-                texture="diamonds",
-                tex_inset = true,
+                d = cap_d - cap_tex_depth * 2 - slop * 2,
+                h = cap_h,
+                texture = "trunc_diamonds",
+                tex_depth = cap_tex_depth,
+                tex_size = [2.5, 2.5],
                 anchor = BOTTOM
             );
         children();
@@ -41,7 +52,7 @@ module mount(
     cap_d = 30,
     cap_h = 12.5,
     post_d = 25,
-    post_h = 12.5,
+    post_h = 15,
     dowel_size = 5 / 8 * INCH,
     crush_rib_size = 1,
     crush_rib_count = 20,
@@ -82,7 +93,7 @@ module mount_insert(
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 30,
+    post_h = 15,
     eps = 0.01,
     anchor, spin, orient    
 ) {
@@ -97,7 +108,9 @@ module mount_insert(
             threaded_rod(
                 d = post_d,
                 h = post_h,
-                pitch = 4,
+                pitch = pitch,
+                starts = starts,
+                end_len2 = 2 * post_h / 3,
                 internal = true
             )
                 attach(TOP)
@@ -143,4 +156,5 @@ module dowel_socket(
     }
 }
 
-mount();
+mount_insert();
+back(40) mount();

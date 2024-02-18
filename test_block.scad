@@ -7,9 +7,10 @@ $fa = 1;
 $fs = 0.25;
 
 cap_d = 30;
+cap_h = 10;
 cap_inset = 1;
 post_d = 25;
-post_h = 10;
+post_h = 15;
 
 module test_block(
     cap_d = 30,
@@ -31,7 +32,7 @@ module test_block(
             [
                 cap_d + pad * 2,
                 cap_d + pad * 2,
-                post_h + cap_inset + pad
+                post_h + cap_inset - eps
             ],
             chamfer = chamfer
         )
@@ -62,5 +63,5 @@ mount(
     cap_d = cap_d,
     post_d = post_d,
     post_h = post_h,
-    cap_h = 5
+    cap_h = cap_h
 );

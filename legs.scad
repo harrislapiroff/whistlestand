@@ -3,10 +3,6 @@ include <BOSL2/threading.scad>
 include <BOSL2/rounding.scad>
 use <mount.scad>
 
-// TODO Check that the rotation of threads on the middle section align
-// TODO slope the external pegs so they don't break off
-// TODO lower the thread pitch so they lock? or find a better way to lock the legs together?
-
 $slop = 0.1;
 $fs = $preview ? 2 : 0.5;
 $fa = $preview ? 20 : 2;
@@ -20,13 +16,11 @@ module leg_solid(
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 9,
+    post_h = 15,
     anchor, spin, orient
 ) {
-    shadow = union([
-        for (i = [0 : 1 : n - 2])
-        left(i * node_spread, glued_circles(d = node_d, spread = node_spread))
-    ]);
+    glued_circles = glued_circles(d = node_d, spread = node_spread);
+    shadow = glued_circles;
 
     attachable(
         anchor, spin, orient,
@@ -37,7 +31,6 @@ module leg_solid(
         ]
     ) {
         right(node_spread * (n - 2) / 2)
-        down((post_h + cap_inset) / 2)
         offset_sweep(
             shadow,
             height = post_h + cap_inset,
@@ -55,7 +48,7 @@ module leg_with_post_inserts(
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 9,
+    post_h = 15,
     post_rotate = 0,
     eps = 0.01,
     anchor, spin, orient
@@ -87,7 +80,7 @@ module leg_with_post_inserts(
                 post_d = post_d,
                 post_h = post_h + 2 * eps,
                 cap_d = cap_d,
-                cap_inset = cap_inset
+                cap_inset = cap_inset,
             );
         };
         children();
@@ -101,7 +94,7 @@ module bottom_leg(
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 9,
+    post_h = 15,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
     eps = 0.01,
@@ -354,6 +347,7 @@ if (render_connected) {
         n = 2,
         node_d = 40,
         node_spread = 50,
+        post_h = 15,
         anchor = BOTTOM + LEFT
     );
 
@@ -362,6 +356,7 @@ if (render_connected) {
         n = 2,
         node_d = 40,
         node_spread = 50,
+        post_h = 15,
         anchor = BOTTOM + LEFT
     );
 
@@ -370,6 +365,7 @@ if (render_connected) {
         n = 2,
         node_d = 40,
         node_spread = 50,
+        post_h = 15,
         anchor = BOTTOM + LEFT
     );
 }

@@ -11,7 +11,7 @@ cap_d = 30;
 // Height of the cap
 cap_h = 12.5;
 // Diameter of the screw part
-post_h = 12.5;
+post_h = 15;
 // Height of the screw part
 post_d = 25;
 
@@ -31,25 +31,25 @@ $slop = 0.1;
 $fs = $preview ? 2 : 0.5;
 $fa = $preview ? 20 : 5;
 
-test_block(
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h,
-    pad = 2,
-    chamfer = 1
-);
+// test_block(
+//     cap_d = cap_d,
+//     cap_inset = cap_inset,
+//     post_d = post_d,
+//     post_h = post_h,
+//     pad = 2,
+//     chamfer = 1
+// );
 
-back(40)
-mount(
-    cap_d = cap_d,
-    cap_h = cap_h,
-    post_d = post_d,
-    post_h = post_h,
-    dowel_size = 5 / 8 * INCH,
-    crush_rib_size = 1,
-    crush_rib_count = 20
-);
+// back(40)
+// mount(
+//     cap_d = cap_d,
+//     cap_h = cap_h,
+//     post_d = post_d,
+//     post_h = post_h,
+//     dowel_size = 5 / 8 * INCH,
+//     crush_rib_size = 1,
+//     crush_rib_count = 20
+// );
 
 back(80)
 bottom_leg(
@@ -62,24 +62,24 @@ bottom_leg(
     post_h = post_h
 );
 
-back(140)
-middle_leg(
-    n = nodes_per_arm,
-    node_d = node_d,
-    node_spread = node_spread,
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h
-);
+// back(140)
+// middle_leg(
+//     n = nodes_per_arm,
+//     node_d = node_d,
+//     node_spread = node_spread,
+//     cap_d = cap_d,
+//     cap_inset = cap_inset,
+//     post_d = post_d,
+//     post_h = post_h
+// );
 
-back(200)
-top_leg(
-    n = nodes_per_arm,
-    node_d = node_d,
-    node_spread = node_spread,
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h
-);
+// back(200)
+// top_leg(
+//     n = nodes_per_arm,
+//     node_d = node_d,
+//     node_spread = node_spread,
+//     cap_d = cap_d,
+//     cap_inset = cap_inset,
+//     post_d = post_d,
+//     post_h = post_h
+// );
