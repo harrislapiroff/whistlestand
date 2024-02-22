@@ -22,8 +22,10 @@ module leg_solid(
     post_h = 12,
     anchor, spin, orient
 ) {
-    glued_circles = glued_circles(d = node_d, spread = node_spread);
-    shadow = glued_circles;
+    shadow = union([
+        for (i = [0 : 1 : n - 2])
+        left(i * node_spread, glued_circles(d = node_d, spread = node_spread))
+    ]);
 
     attachable(
         anchor, spin, orient,
@@ -141,9 +143,9 @@ module bottom_leg(
 
             // Post to align the other legs
             tag("keep")
-            position(LEFT + BOTTOM)
+            position(LEFT + TOP)
             right(cutaway_d - cutaway_chamfer - slop - eps)
-            up(solid_height / 3 - eps)
+            down(cutaway_h + eps)
             cyl(
                 d = alignment_post_d,
                 h = cutaway_h,
