@@ -5,8 +5,8 @@ include <BOSL2/threading.scad>
 
 $slop = 0.2;
 
-starts = 4;
-pitch = 2;
+starts = 1;
+pitch = 3;
 
 module mount_outer (
     cap_d = 30,
@@ -110,7 +110,7 @@ module mount_insert(
                 h = post_h,
                 pitch = pitch,
                 starts = starts,
-                end_len2 = 2 * post_h / 3,
+                end_len2 = post_h / 2,
                 internal = true
             )
                 attach(TOP)
