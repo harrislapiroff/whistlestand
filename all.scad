@@ -5,6 +5,10 @@ use <mount.scad>
 use <test_block.scad>
 use <legs.scad>
 
+/* [Parts] */
+// Which parts to render
+parts = "all"; // ["all", "mount", "top", "middle", "bottom"]
+
 /* [Dowel Mount] */
 // Diameter of the "cap" (widest part of the mount)
 cap_d = 30;
@@ -40,49 +44,102 @@ $fa = $preview ? 20 : 1;
 //     chamfer = 1
 // );
 
-back(40)
-mount(
-    cap_d = cap_d,
-    cap_h = cap_h,
-    post_d = post_d,
-    post_h = post_h,
-    dowel_size = 5 / 8 * INCH,
-    crush_rib_size = 1,
-    crush_rib_count = 20
-);
+if (parts == "all") {
+    back(40)
+    mount(
+        cap_d = cap_d,
+        cap_h = cap_h,
+        post_d = post_d,
+        post_h = post_h,
+        dowel_size = 5 / 8 * INCH,
+        crush_rib_size = 1,
+        crush_rib_count = 20
+    );
 
-back(80)
-legs_with_holes(
-    "top",
-    n = nodes_per_arm,
-    node_d = node_d,
-    node_spread = node_spread,
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h
-);
+    back(80)
+    legs_with_holes(
+        "top",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
 
-back(140)
-legs_with_holes(
-    "middle",
-    n = nodes_per_arm,
-    node_d = node_d,
-    node_spread = node_spread,
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h
-);
+    back(140)
+    legs_with_holes(
+        "middle",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
 
-back(200)
-legs_with_holes(
-    "bottom",
-    n = nodes_per_arm,
-    node_d = node_d,
-    node_spread = node_spread,
-    cap_d = cap_d,
-    cap_inset = cap_inset,
-    post_d = post_d,
-    post_h = post_h
-);
+    back(200)
+    legs_with_holes(
+        "bottom",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
+}
+
+if (parts == "mount") {
+    mount(
+        cap_d = cap_d,
+        cap_h = cap_h,
+        post_d = post_d,
+        post_h = post_h,
+        dowel_size = 5 / 8 * INCH,
+        crush_rib_size = 1,
+        crush_rib_count = 20
+    );
+}
+
+if (parts == "top") {
+    legs_with_holes(
+        "top",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
+}
+
+if (parts == "middle") {
+    legs_with_holes(
+        "middle",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
+}
+
+if (parts == "bottom") {
+    legs_with_holes(
+        "bottom",
+        n = nodes_per_arm,
+        node_d = node_d,
+        node_spread = node_spread,
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h
+    );
+}
