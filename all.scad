@@ -17,7 +17,7 @@ post_d = 25;
 
 /* [Arms] */
 // Note that one slot is shared between all three arms, so if nodes per arm is set to N, then the number of slots total is N * 3 - 2
-nodes_per_arm = 2;
+nodes_per_arm = 4;
 // Diameter of each node
 node_d = 40;
 // Distance between the center of each node
@@ -52,7 +52,8 @@ mount(
 );
 
 back(80)
-bottom_leg(
+legs_with_holes(
+    "top",
     n = nodes_per_arm,
     node_d = node_d,
     node_spread = node_spread,
@@ -63,7 +64,8 @@ bottom_leg(
 );
 
 back(140)
-middle_leg(
+legs_with_holes(
+    "middle",
     n = nodes_per_arm,
     node_d = node_d,
     node_spread = node_spread,
@@ -74,7 +76,8 @@ middle_leg(
 );
 
 back(200)
-top_leg(
+legs_with_holes(
+    "bottom",
     n = nodes_per_arm,
     node_d = node_d,
     node_spread = node_spread,

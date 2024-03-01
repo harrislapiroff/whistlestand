@@ -56,7 +56,7 @@ module mount(
     dowel_size = 5 / 8 * INCH,
     crush_rib_size = 1,
     crush_rib_count = 20,
-    floor_thickness = 1,
+    floor_thickness = 5,
     eps = 0.01,
     anchor, spin, orient
 ) {

@@ -14,8 +14,8 @@ render_connected = false;
 
 module leg_solid(
     n = 4,
-    node_d = 50,
-    node_spread = 70,
+    node_d = 40,
+    node_spread = 50,
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
@@ -48,8 +48,8 @@ module leg_solid(
 
 module leg_with_post_inserts(
     n = 4,
-    node_d = 50,
-    node_spread = 70,
+    node_d = 40,
+    node_spread = 50,
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
@@ -94,8 +94,8 @@ module leg_with_post_inserts(
 
 module bottom_leg(
     n = 4,
-    node_d = 50,
-    node_spread = 70,
+    node_d = 40,
+    node_spread = 50,
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
@@ -160,12 +160,12 @@ module bottom_leg(
 
 module middle_leg(
     n = 4,
-    node_d = 50,
-    node_spread = 70,
+    node_d = 40,
+    node_spread = 50,
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 9,
+    post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
     eps = 0.01,
@@ -238,12 +238,12 @@ module middle_leg(
 
 module top_leg(
     n = 4,
-    node_d = 50,
-    node_spread = 70,
+    node_d = 40,
+    node_spread = 50,
     cap_d = 30,
     cap_inset = 1,
     post_d = 25,
-    post_h = 9,
+    post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
     eps = 0.01,
@@ -322,59 +322,200 @@ module pegs(
     }
 }
 
-if (render_connected) {
-    color("red")
-    right(25)
-    top_leg(
-        n = 2,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-    );
+penny_d = 19.05;
+penny_h = 1.55;
+magnet_d = 6;
+magnet_h = 1.5;
 
-    color("green")
-    zrot(120)
-    right(25)
-    middle_leg(
-        n = 2,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-    );
+module legs_with_holes (
+    leg = "top",
+    floor_h = 0.6,
+    // Pass thru args
+    n = 4,
+    node_d = 40,
+    node_spread = 50,
+    cap_d = 30,
+    cap_inset = 1,
+    post_d = 25,
+    post_h = 12,
+    cutaway_chamfer = 0.5,
+    alignment_post_d = 7,
+    eps = 0.01,
+    anchor, spin, orient
+) {
+    usable_height = post_h - floor_h * 2;
+    pennies_count = floor(usable_height / penny_h);
+    pennies_height = usable_height; // pennies_count * penny_h; 
 
-    color("blue")
-    zrot(240)
-    right(25)
-    bottom_leg(
-        n = 2,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-    );
-} else {
-    top_leg(
-        n = 3,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-        anchor = BOTTOM + LEFT
-    );
+    attachable(
+        anchor, spin, orient,
+        size = [
+            node_spread * (n - 1) + node_d,
+            node_d,
+            post_h + cap_inset
+        ]
+    ) {
+        
+        diff("holes") {
+            if (leg == "top") {
+                top_leg(
+                    n = n,
+                    node_d = node_d,
+                    node_spread = node_spread,
+                    cap_d = cap_d,
+                    cap_inset = cap_inset,
+                    post_d = post_d,
+                    post_h = post_h,
+                    cutaway_chamfer = cutaway_chamfer,
+                    alignment_post_d = alignment_post_d,
+                    eps = eps,
+                    anchor = anchor,
+                    spin = spin,
+                    orient = orient
+                );
+            } else if (leg == "middle") {
+                middle_leg(
+                    n = n,
+                    node_d = node_d,
+                    node_spread = node_spread,
+                    cap_d = cap_d,
+                    cap_inset = cap_inset,
+                    post_d = post_d,
+                    post_h = post_h,
+                    cutaway_chamfer = cutaway_chamfer,
+                    alignment_post_d = alignment_post_d,
+                    eps = eps,
+                    anchor = anchor,
+                    spin = spin,
+                    orient = orient
+                );
+            } else if (leg == "bottom") {
+                bottom_leg(
+                    n = n,
+                    node_d = node_d,
+                    node_spread = node_spread,
+                    cap_d = cap_d,
+                    cap_inset = cap_inset,
+                    post_d = post_d,
+                    post_h = post_h,
+                    cutaway_chamfer = cutaway_chamfer,
+                    alignment_post_d = alignment_post_d,
+                    eps = eps,
+                    anchor = anchor,
+                    spin = spin,
+                    orient = orient
+                );
+            }
+            // Penny holes
+            tag("holes")
+            position(BOTTOM + RIGHT)
+            up(floor_h) {
+                for (i = [0 : 1 : n - 3])
+                left((node_spread + node_d) / 2 + i * node_spread)
+                cyl(
+                    d = penny_d,
+                    h = pennies_height, 
+                    anchor = BOTTOM
+                ) {
+                    // Magnet holes
+                    position(BOTTOM)
+                    right(sin(45) * (penny_d + magnet_d) / 2)
+                    back(cos(45) * (penny_d + magnet_d) / 2)
+                    cyl(
+                        d = magnet_d,
+                        h = magnet_h, 
+                        anchor = BOTTOM
+                    );
 
-    back(100)
-    middle_leg(
-        n = 3,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-        anchor = BOTTOM + LEFT
-    );
+                    position(TOP)
+                    right(sin(45) * (penny_d + magnet_d) / 2)
+                    back(cos(45) * (penny_d + magnet_d) / 2)
+                    cyl(
+                        d = magnet_d,
+                        h = magnet_h, 
+                        anchor = TOP
+                    );
 
-    back(200)
-    bottom_leg(
-        n = 3,
-        node_d = 40,
-        node_spread = 50,
-        post_h = 12,
-        anchor = BOTTOM + LEFT
-    );
+                    position(BOTTOM)
+                    right(sin(45) * (penny_d + magnet_d) / 2)
+                    fwd(cos(45) * (penny_d + magnet_d) / 2)
+                    cyl(
+                        d = magnet_d,
+                        h = magnet_h, 
+                        anchor = BOTTOM
+                    );
+
+                    position(TOP)
+                    right(sin(45) * (penny_d + magnet_d) / 2)
+                    fwd(cos(45) * (penny_d + magnet_d) / 2)
+                    cyl(
+                        d = magnet_d,
+                        h = magnet_h, 
+                        anchor = TOP
+                    );
+                }
+            }
+        }
+
+        children();
+    }
 }
+
+legs_with_holes("bottom");
+
+// if (render_connected) {
+//     color("red")
+//     right(25)
+//     top_leg(
+//         n = 2,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//     );
+
+//     color("green")
+//     zrot(120)
+//     right(25)
+//     middle_leg(
+//         n = 2,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//     );
+
+//     color("blue")
+//     zrot(240)
+//     right(25)
+//     bottom_leg(
+//         n = 2,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//     );
+// } else {
+//     top_leg(
+//         n = 3,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//         anchor = BOTTOM + LEFT
+//     );
+
+//     back(100)
+//     middle_leg(
+//         n = 3,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//         anchor = BOTTOM + LEFT
+//     );
+
+//     back(200)
+//     bottom_leg(
+//         n = 3,
+//         node_d = 40,
+//         node_spread = 50,
+//         post_h = 12,
+//         anchor = BOTTOM + LEFT
+//     );
+// }
