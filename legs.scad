@@ -107,7 +107,7 @@ module bottom_leg(
 ) {
     slop = get_slop();
     solid_height = post_h + cap_inset;
-    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h = solid_height * (1 - leg_height_ratios[0]) + eps;
 
     attachable(
@@ -173,7 +173,7 @@ module middle_leg(
 ) {
     slop = get_slop();
     solid_height = post_h + cap_inset;
-    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h_top = solid_height * leg_height_ratios[2] + eps;
     cutaway_h_bottom = solid_height * leg_height_ratios[0] + eps;
 
@@ -251,7 +251,7 @@ module top_leg(
 ) {
     slop = get_slop();
     solid_height = post_h + cap_inset;
-    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * eps + 2 * slop;
+    cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h = solid_height * (1 - leg_height_ratios[2]) + eps;
     
     attachable(
