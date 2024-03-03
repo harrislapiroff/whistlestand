@@ -4,6 +4,44 @@ $slop = 0.1;
 $fs = $preview ? 2 : 0.1;
 $fa = $preview ? 20 : 0.5;
 
+// A tube that can have inner and outer chamfers or fillets
+module chamfered_tube (
+    id = 10,
+    od = 11,
+    h = 20,
+    ichamfer1 = 0,
+    ochamfer1 = 0,
+    ichamfer2 = 0,
+    ochamfer2 = 0,
+    EPSILON = 0.001,
+    anchor, spin, orient
+) {
+    attachable(
+        anchor, spin, orient,
+        d = od,
+        h = h
+    ) {
+        difference() {
+            cyl(
+                d = od,
+                h = h,
+                chamfer1 = ochamfer1,
+                chamfer2 = ochamfer2,
+            );
+
+            cyl(
+                d = id,
+                h = h + EPSILON * 2,
+                // Invert the chamfers since this is a mask
+                chamfer1 = -ichamfer1,
+                chamfer2 = -ichamfer2,
+            );
+        }
+
+        children();
+    }
+}
+
 module snap_nub (
     d = 11,
     h = 1,
@@ -47,6 +85,10 @@ module annular_snap_tabs (
     nub_height = 1,
     nub_bevel_top = 1.5,
     nub_bevel_bottom = 1.5,
+    ichamfer1 = 0,
+    ochamfer1 = 0,
+    ichamfer2 = -0.75,
+    ochamfer2 = -0.75,
     EPSILON = 0.001,
     anchor, spin, orient
 ) {
@@ -56,10 +98,14 @@ module annular_snap_tabs (
         h = h
     ) {
         diff("slots")
-        tube(
+        chamfered_tube(
             id = id,
             od = od,
             h = h,
+            ichamfer1 = ichamfer1,
+            ochamfer1 = ochamfer1,
+            ichamfer2 = ichamfer2,
+            ochamfer2 = ochamfer2,
         ) {
             // Nubs
             position(BOTTOM)
@@ -131,8 +177,8 @@ module annular_snap_mask(
         cyl(
             d = od + slop * 2,
             h = h,
-            chamfer1 = chamfer1,
-            chamfer2 = chamfer2,
+            chamfer1 = chamfer1 + slop * 2,
+            chamfer2 = chamfer2 + slop * 2,
         )
             // Nubs
             position(BOTTOM)

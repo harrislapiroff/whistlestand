@@ -13,7 +13,7 @@ pitch = 3;
 module mount_outer (
     cap_d = 30,
     cap_h = 12.5,
-    cap_tex_depth = 0.5,
+    cap_tex_depth = 0.75,
     post_d = 25,
     post_h = 15,
     anchor, spin, orient
@@ -30,14 +30,17 @@ module mount_outer (
         down(cap_h / 2)
         annular_snap_tabs(
             od = post_d,
-            id = post_d - 2,
+            id = post_d - 1.5,
             h = post_h,
+            slot_n = 5,
             slot_h = post_h - 2,
             nub_z = 0.5,
             nub_bevel_bottom = 1.5,
             nub_bevel_top = 1.5,
             nub_height = 0.5,
             nub_thickness = 0.75,
+            ichamfer2 = -1,
+            ochamfer2 = -1,
         )
         attach(TOP) {
             // An internal cylinder to hold the dowel
@@ -121,7 +124,7 @@ module mount_insert(
             down(cap_inset / 2)
             annular_snap_mask(
                 od = post_d,
-                id = post_d - 2,
+                id = post_d - 1.5,
                 h = post_h,
                 slot_h = post_h - 2,
                 nub_z = 0.5,
