@@ -1,9 +1,11 @@
 // Dowel diameters: 5/8" (15.876mm) and 7/16" (11.1125mm)'
 
 include <BOSL2/std.scad>
-include <BOSL2/threading.scad>
+use <annular-snap-joint.scad>
 
-$slop = 0.2;
+$slop = 0.1;
+$fs = $preview ? 2 : 0.1;
+$fa = $preview ? 20 : 0.5;
 
 starts = 1;
 pitch = 3;
@@ -26,16 +28,27 @@ module mount_outer (
     ) {
         // Move down by half cap height to recenter the entire object
         down(cap_h / 2)
-        threaded_rod(
-            d = post_d,
+        annular_snap_tabs(
+            od = post_d,
+            id = post_d - 2,
             h = post_h,
-            end_len2 = post_h / 2,
-            starts = starts,
-            pitch = pitch,
-            bevel1 = 0.5,
-            bevel2 = "reverse",
+            slot_h = post_h - 2,
+            nub_z = 0.5,
+            nub_bevel_bottom = 1,
+            nub_bevel_top = 1,
+            nub_height = 0.5,
+            nub_thickness = 0.75,
         )
-            attach(TOP)
+        attach(TOP) {
+            // An internal cylinder to hold the dowel
+            cyl(
+                d = post_d - 6,
+                h = post_h,
+                chamfer1 = 1.5,
+                anchor = TOP
+            );
+            
+            // The knurled cap
             cyl(
                 d = cap_d - cap_tex_depth * 2 - slop * 2,
                 h = cap_h,
@@ -44,6 +57,7 @@ module mount_outer (
                 tex_size = [2.5, 2.5],
                 anchor = BOTTOM
             );
+        }
         children();
     }
 };
@@ -56,7 +70,7 @@ module mount(
     dowel_size = 5 / 8 * INCH,
     crush_rib_size = 1,
     crush_rib_count = 20,
-    floor_thickness = 5,
+    floor_thickness = 2,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -105,13 +119,18 @@ module mount_insert(
     ) {
             // Move down by half cap height to recenter the entire object
             down(cap_inset / 2)
-            threaded_rod(
-                d = post_d,
+            annular_snap_mask(
+                od = post_d,
+                id = post_d - 2,
                 h = post_h,
-                pitch = pitch,
-                starts = starts,
-                end_len2 = post_h / 2,
-                internal = true
+                slot_h = post_h - 2,
+                nub_z = 0.5,
+                nub_bevel_bottom = 1,
+                nub_bevel_top = 1,
+                nub_height = 0.5,
+                nub_thickness = 0.75,
+                chamfer1 = 0,
+                chamfer2 = -1,
             )
                 attach(TOP)
                 down(eps)
@@ -157,4 +176,5 @@ module dowel_socket(
 }
 
 mount_insert();
+
 back(40) mount();

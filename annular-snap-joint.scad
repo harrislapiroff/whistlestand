@@ -115,6 +115,8 @@ module annular_snap_mask(
     nub_height = 1,
     nub_bevel_top = 1.5,
     nub_bevel_bottom = 1.5,
+    chamfer1 = 0,
+    chamfer2 = -1,
     EPSILON = 0.001,
     anchor, spin, orient
 ) {
@@ -127,8 +129,10 @@ module annular_snap_mask(
     ) {
         diff("slots")
         cyl(
-            d = od,
+            d = od + slop * 2,
             h = h,
+            chamfer1 = chamfer1,
+            chamfer2 = chamfer2,
         )
             // Nubs
             position(BOTTOM)
