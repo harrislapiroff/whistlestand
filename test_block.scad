@@ -61,6 +61,7 @@ test_block(
     cap_inset = cap_inset,
     post_d = post_d,
     post_h = post_h,
+    anchor = BOTTOM,
 );
 
 back(40)
@@ -68,5 +69,6 @@ mount(
     cap_d = cap_d,
     post_d = post_d,
     post_h = post_h,
-    cap_h = cap_h
+    cap_h = cap_h,
+    anchor = BOTTOM,
 );

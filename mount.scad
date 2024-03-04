@@ -13,9 +13,11 @@ pitch = 3;
 module mount_outer (
     cap_d = 30,
     cap_h = 12.5,
-    cap_tex_depth = 0.75,
+    cap_tex_depth = 0.5,
     post_d = 25,
     post_h = 15,
+    tab_thickness = 1,
+    tab_count = 4,
     anchor, spin, orient
 ) {
     slop = get_slop();
@@ -30,16 +32,16 @@ module mount_outer (
         down(cap_h / 2)
         annular_snap_tabs(
             od = post_d,
-            id = post_d - 1.5,
+            id = post_d - tab_thickness * 2,
             h = post_h,
-            slot_n = 5,
-            slot_h = post_h - 2,
-            nub_z = 0.5,
-            nub_bevel_bottom = 1.5,
-            nub_bevel_top = 1.5,
-            nub_height = 0.5,
-            nub_thickness = 0.75,
-            ichamfer2 = -1,
+            slot_n = tab_count,
+            slot_h = post_h - 0.5,
+            nub_z = 0.6,
+            nub_bevel_bottom = 0.8,
+            nub_bevel_top = 0.8,
+            nub_height = 0.6,
+            nub_thickness = 0.5,
+            ichamfer2 = 0,
             ochamfer2 = -1,
         )
         attach(TOP) {
@@ -74,6 +76,8 @@ module mount(
     crush_rib_size = 1,
     crush_rib_count = 20,
     floor_thickness = 2,
+    tab_thickness = 1,
+    tab_count = 4,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -89,7 +93,9 @@ module mount(
                 cap_d = cap_d,
                 cap_h = cap_h,
                 post_d = post_d,
-                post_h = post_h
+                post_h = post_h,
+                tab_thickness = tab_thickness,
+                tab_count = tab_count,
             )
                 tag("socket")
                 position(TOP)
@@ -127,11 +133,11 @@ module mount_insert(
                 id = post_d - 1.5,
                 h = post_h,
                 slot_h = post_h - 2,
-                nub_z = 0.5,
-                nub_bevel_bottom = 1.5,
-                nub_bevel_top = 1.5,
-                nub_height = 0.25,
-                nub_thickness = 0.75,
+                nub_z = 0.6,
+                nub_bevel_bottom = 0.6,
+                nub_bevel_top = 0.6,
+                nub_height = 0.6,
+                nub_thickness = 0.5,
                 chamfer1 = 0,
                 chamfer2 = -1,
             )
