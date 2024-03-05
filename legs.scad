@@ -168,6 +168,7 @@ module middle_leg(
     post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
+    supports = true,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -232,7 +233,20 @@ module middle_leg(
                 chamfer1 = -cutaway_chamfer,
                 anchor = BOTTOM
             );
+
+            tag("keep")
+            position(LEFT + BOTTOM)
+            up(cutaway_h_bottom / 2)
+            right(node_d / 2)
+            supports(
+                d = node_d,
+                id = post_d,
+                cutout_d = alignment_post_d + slop * 2 + cutaway_chamfer * 2,
+                h = cutaway_h_bottom,
+                spin = -60
+            );
         }
+
         children();
     }
 }
@@ -247,6 +261,7 @@ module top_leg(
     post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
+    supports = true,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -297,6 +312,18 @@ module top_leg(
                 h = cutaway_h + eps,
                 chamfer2 = -cutaway_chamfer,
                 anchor = BOTTOM
+            );
+
+            tag("keep")
+            position(LEFT + BOTTOM)
+            up(cutaway_h / 2)
+            right(node_d / 2)
+            supports(
+                d = node_d,
+                id = post_d,
+                cutout_d = alignment_post_d + slop * 2,
+                h = cutaway_h,
+                spin = 60
             );
         }
         children();
@@ -462,7 +489,110 @@ module legs_with_holes (
     }
 }
 
-legs_with_holes("bottom");
+module supports(
+    d = 10,
+    id = 5,
+    cutout_d = 3,
+    h = 10,
+    // Expected layer height
+    layer_height = 0.2,
+    support_separation = 2,
+    support_thickness = 0.5,
+    support_top_thickness = 0.5,
+    EPSILON = 0.001,
+    anchor, spin, orient
+) {
+    outer_support_1_d = d - support_thickness;
+    outer_support_2_d = d - support_separation * 2 + support_thickness;
+    outer_support_mid_d = (outer_support_1_d + outer_support_2_d) / 2;
+    cutout_circle_1_d = cutout_d + support_thickness;
+    cutout_circle_2_d = cutout_d + support_separation * 2 + support_thickness;
+    cutout_circle_mid_d = (cutout_circle_1_d + cutout_circle_2_d) / 2;
+
+    inner_support_1_d = id + support_thickness;
+    inner_support_2_d = id + support_separation * 2 - support_thickness;
+    inner_support_mid_d = (inner_support_1_d + inner_support_2_d) / 2;
+
+    outer_support_1 = difference(
+        circle(d = outer_support_1_d),
+        left(d / 2, circle(d = cutout_circle_1_d))
+    );
+    outer_support_2 = difference(
+        circle(d = outer_support_2_d),
+        left(d / 2, circle(d = cutout_circle_2_d))
+    );
+    outer_support_mid = difference(
+        circle(d = outer_support_mid_d),
+        left(d / 2, circle(d = cutout_circle_mid_d))
+    );
+    inner_support_1 = circle(d = inner_support_1_d);
+    inner_support_2 = circle(d = inner_support_2_d);
+    inner_support_mid = circle(d = inner_support_mid_d);
+
+    dashpat = [0.5, 0.75];
+
+    attachable(
+        anchor, spin, orient,
+        d = d,
+        h = h,
+    ) {
+        down(h / 2) {
+            // Outer support 1
+            linear_extrude(height = h - layer_height)
+            stroke(
+                path = outer_support_1,
+                width = support_thickness,
+                closed = true
+            );
+            
+            // Outer support 2
+            linear_extrude(height = h - layer_height)
+            stroke(
+                path = outer_support_2,
+                width = support_thickness,
+                closed = true
+            );
+
+            // Outer crossbars
+            up(h - layer_height - EPSILON)
+            linear_extrude(height = layer_height + 2 * EPSILON)
+            dashed_stroke(
+                path = outer_support_mid,
+                width = support_separation,
+                dashpat = dashpat,
+            );
+
+            // Inner support 1
+            linear_extrude(height = h - layer_height)
+            stroke(
+                path = inner_support_1,
+                width = support_thickness,
+                closed = true
+            );
+
+            // Inner support 2
+            linear_extrude(height = h - layer_height)
+            stroke(
+                path = inner_support_2,
+                width = support_thickness,
+                closed = true
+            );
+
+            // Inner crossbars
+            up(h - layer_height - EPSILON)
+            linear_extrude(height = layer_height + 2 * EPSILON)
+            dashed_stroke(
+                path = inner_support_mid,
+                width = support_separation,
+                dashpat = dashpat,
+            );
+        }
+
+        children();
+    }
+}
+
+// legs_with_holes("middle");
 
 // if (render_connected) {
 //     color("red")
