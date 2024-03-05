@@ -174,8 +174,8 @@ module middle_leg(
     slop = get_slop();
     solid_height = post_h + cap_inset;
     cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
-    cutaway_h_top = solid_height * leg_height_ratios[2] + eps;
-    cutaway_h_bottom = solid_height * leg_height_ratios[0] + eps;
+    cutaway_h_top = solid_height * leg_height_ratios[2] + slop + eps;
+    cutaway_h_bottom = solid_height * leg_height_ratios[0] + slop + eps;
 
     attachable(
         anchor, spin, orient,
@@ -197,7 +197,7 @@ module middle_leg(
             post_rotate = 120
         )
         {
-            // Remove 2/3 of place where it will join the other legs
+            // Remove portion where bottom leg will slot in
             tag("remove")
             position(LEFT + BOTTOM)
             down(eps)
@@ -209,6 +209,7 @@ module middle_leg(
                 anchor = LEFT + BOTTOM
             );
 
+            // Remove portion where top leg will slot in
             tag("remove")
             position(LEFT + TOP)
             up(eps)
