@@ -102,6 +102,7 @@ module bottom_leg(
     post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
+    supports = true, // Has no effect, no supports needed
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -234,6 +235,8 @@ module middle_leg(
                 anchor = BOTTOM
             );
 
+            // Supports
+            if(supports)
             tag("keep")
             position(LEFT + BOTTOM)
             up(cutaway_h_bottom / 2)
@@ -314,6 +317,8 @@ module top_leg(
                 anchor = BOTTOM
             );
 
+            // Supports
+            if (supports)
             tag("keep")
             position(LEFT + BOTTOM)
             up(cutaway_h / 2)
@@ -368,6 +373,7 @@ module legs_with_holes (
     post_h = 12,
     cutaway_chamfer = 0.5,
     alignment_post_d = 7,
+    supports = true,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -396,6 +402,7 @@ module legs_with_holes (
                     post_h = post_h,
                     cutaway_chamfer = cutaway_chamfer,
                     alignment_post_d = alignment_post_d,
+                    supports = supports,
                     eps = eps,
                     anchor = anchor,
                     spin = spin,
@@ -412,6 +419,7 @@ module legs_with_holes (
                     post_h = post_h,
                     cutaway_chamfer = cutaway_chamfer,
                     alignment_post_d = alignment_post_d,
+                    supports = supports,
                     eps = eps,
                     anchor = anchor,
                     spin = spin,
@@ -428,6 +436,7 @@ module legs_with_holes (
                     post_h = post_h,
                     cutaway_chamfer = cutaway_chamfer,
                     alignment_post_d = alignment_post_d,
+                    supports = supports,
                     eps = eps,
                     anchor = anchor,
                     spin = spin,
@@ -489,6 +498,12 @@ module legs_with_holes (
     }
 }
 
+// These supports take the form of two pairs of rings:
+// One pair supports the outer perimeter of the donut
+// and includes a parameter for the cutout for the
+// alignment post.
+// The other pair supports the inner perimeter of the
+// donut.
 module supports(
     d = 10,
     id = 5,
@@ -502,6 +517,7 @@ module supports(
     EPSILON = 0.001,
     anchor, spin, orient
 ) {
+    // Measurements for the outer support rings
     outer_support_1_d = d - support_thickness;
     outer_support_2_d = d - support_separation * 2 + support_thickness;
     outer_support_mid_d = (outer_support_1_d + outer_support_2_d) / 2;
@@ -509,6 +525,7 @@ module supports(
     cutout_circle_2_d = cutout_d + support_separation * 2 + support_thickness;
     cutout_circle_mid_d = (cutout_circle_1_d + cutout_circle_2_d) / 2;
 
+    // Measurements for the inner support rings
     inner_support_1_d = id + support_thickness;
     inner_support_2_d = id + support_separation * 2 - support_thickness;
     inner_support_mid_d = (inner_support_1_d + inner_support_2_d) / 2;
@@ -537,6 +554,9 @@ module supports(
         h = h,
     ) {
         down(h / 2) {
+            // Floor
+            cyl(d = d, h = layer_height, anchor = BOTTOM);
+
             // Outer support 1
             linear_extrude(height = h - layer_height)
             stroke(
@@ -592,61 +612,4 @@ module supports(
     }
 }
 
-// legs_with_holes("middle");
-
-// if (render_connected) {
-//     color("red")
-//     right(25)
-//     top_leg(
-//         n = 2,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//     );
-
-//     color("green")
-//     zrot(120)
-//     right(25)
-//     middle_leg(
-//         n = 2,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//     );
-
-//     color("blue")
-//     zrot(240)
-//     right(25)
-//     bottom_leg(
-//         n = 2,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//     );
-// } else {
-//     top_leg(
-//         n = 3,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//         anchor = BOTTOM + LEFT
-//     );
-
-//     back(100)
-//     middle_leg(
-//         n = 3,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//         anchor = BOTTOM + LEFT
-//     );
-
-//     back(200)
-//     bottom_leg(
-//         n = 3,
-//         node_d = 40,
-//         node_spread = 50,
-//         post_h = 12,
-//         anchor = BOTTOM + LEFT
-//     );
-// }
+legs_with_holes("top", supports = true);
