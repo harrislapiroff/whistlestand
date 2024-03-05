@@ -53,7 +53,10 @@ if (parts == "all") {
         post_h = post_h,
         dowel_size = 5 / 8 * INCH,
         crush_rib_size = 1,
-        crush_rib_count = 20
+        crush_rib_count = 20,
+        tab_thickness = 1,
+        tab_count = 6,
+        anchor = BOTTOM,
     );
 
     back(80)
@@ -65,7 +68,8 @@ if (parts == "all") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 
     back(140)
@@ -77,7 +81,8 @@ if (parts == "all") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 
     back(200)
@@ -89,7 +94,8 @@ if (parts == "all") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 }
 
@@ -101,7 +107,10 @@ if (parts == "mount") {
         post_h = post_h,
         dowel_size = 5 / 8 * INCH,
         crush_rib_size = 1,
-        crush_rib_count = 20
+        crush_rib_count = 20,
+        tab_thickness = 1,
+        tab_count = 6,
+        anchor = BOTTOM,
     );
 }
 
@@ -114,7 +123,8 @@ if (parts == "top") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 }
 
@@ -127,7 +137,8 @@ if (parts == "middle") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 }
 
@@ -140,6 +151,7 @@ if (parts == "bottom") {
         cap_d = cap_d,
         cap_inset = cap_inset,
         post_d = post_d,
-        post_h = post_h
+        post_h = post_h,
+        anchor = BOTTOM,
     );
 }

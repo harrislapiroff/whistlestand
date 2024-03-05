@@ -70,5 +70,7 @@ mount(
     post_d = post_d,
     post_h = post_h,
     cap_h = cap_h,
+    tab_count = 4,
+    tab_thickness = 1,
     anchor = BOTTOM,
 );

@@ -35,19 +35,19 @@ module mount_outer (
             id = post_d - tab_thickness * 2,
             h = post_h,
             slot_n = tab_count,
-            slot_h = post_h - 0.5,
+            slot_h = post_h - 1.5,
             nub_z = 0.6,
             nub_bevel_bottom = 0.8,
             nub_bevel_top = 0.8,
             nub_height = 0.6,
-            nub_thickness = 0.5,
+            nub_thickness = 0.6,
             ichamfer2 = 0,
-            ochamfer2 = -1,
+            ochamfer2 = -0.6,
         )
         attach(TOP) {
             // An internal cylinder to hold the dowel
             cyl(
-                d = post_d - 6,
+                d = post_d - tab_thickness * 2 - 1.5,
                 h = post_h,
                 chamfer1 = 1.5,
                 anchor = TOP
@@ -132,12 +132,12 @@ module mount_insert(
                 od = post_d,
                 id = post_d - 1.5,
                 h = post_h,
-                slot_h = post_h - 2,
+                slot_h = post_h - 1.5,
                 nub_z = 0.6,
-                nub_bevel_bottom = 0.6,
-                nub_bevel_top = 0.6,
+                nub_bevel_bottom = 0.8,
+                nub_bevel_top = 0.8,
                 nub_height = 0.6,
-                nub_thickness = 0.5,
+                nub_thickness = 0.6,
                 chamfer1 = 0,
                 chamfer2 = -1,
             )
