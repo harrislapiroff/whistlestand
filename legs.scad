@@ -118,7 +118,7 @@ module bottom_leg(
             solid_height
         ]
     ) {
-        diff("remove", "keep")
+        diff("remove")
         leg_with_post_inserts(
             n = n,
             node_d = node_d,
@@ -127,33 +127,33 @@ module bottom_leg(
             cap_inset = cap_inset,
             post_d = post_d,
             post_h = post_h
-        )
-        {
-            // Remove place where it will join the other legs
-            tag("remove")
-            position(LEFT + TOP)
-            up(eps)
-            left(eps + slop + cutaway_chamfer)
-            cyl(
-                d = cutaway_d,
-                h = cutaway_h,
-                chamfer1 = cutaway_chamfer,
-                anchor = LEFT + TOP
-            );
+        ){
+            tag("remove") difference () {
+                // Remove place where it will join the other legs
+                position(LEFT + TOP)
+                up(eps)
+                left(eps + slop + cutaway_chamfer)
+                cyl(
+                    d = cutaway_d,
+                    h = cutaway_h,
+                    chamfer1 = cutaway_chamfer,
+                    anchor = LEFT + TOP
+                );
 
-            // Post to align the other legs
-            tag("keep")
-            position(LEFT + TOP)
-            right(cutaway_d - cutaway_chamfer - slop - eps)
-            down(cutaway_h + eps)
-            cyl(
-                d = alignment_post_d,
-                h = cutaway_h,
-                chamfer1 = -cutaway_chamfer,
-                chamfer2 = cutaway_chamfer,
-                anchor = BOTTOM
-            );
+                // Post to align the other legs
+                position(LEFT + TOP)
+                right(cutaway_d - cutaway_chamfer - slop - eps)
+                down(cutaway_h + eps)
+                cyl(
+                    d = alignment_post_d,
+                    h = cutaway_h,
+                    chamfer1 = -cutaway_chamfer,
+                    chamfer2 = cutaway_chamfer,
+                    anchor = BOTTOM
+                );
+            }
         }
+
         children();
     }
 }
@@ -222,12 +222,12 @@ module middle_leg(
 
             // Cut out a slot for the alignment post
             tag("remove")
-            up(solid_height / 3 - eps)
+            up(cutaway_h_bottom - eps)
             position(LEFT + BOTTOM)
             zrot(300, cp = [node_d / 2, 0, 0])
             cyl(
                 d = alignment_post_d + slop * 2,
-                h = cutaway_h_bottom + eps,
+                h = (solid_height - cutaway_h_bottom) + eps,
                 chamfer1 = -cutaway_chamfer,
                 anchor = BOTTOM
             );
