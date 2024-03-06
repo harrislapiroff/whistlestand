@@ -35,6 +35,7 @@ module leg_solid(
             post_h + cap_inset
         ]
     ) {
+        down((post_h + cap_inset) / 2)
         right(node_spread * (n - 2) / 2)
         offset_sweep(
             shadow,
@@ -111,6 +112,7 @@ module bottom_leg(
     cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h = solid_height * (1 - leg_height_ratios[0]) + eps;
 
+    tag_scope()
     attachable(
         anchor, spin, orient,
         size = [
@@ -179,6 +181,7 @@ module middle_leg(
     cutaway_h_top = solid_height * leg_height_ratios[2] + slop + eps;
     cutaway_h_bottom = solid_height * leg_height_ratios[0] + slop + eps;
 
+    tag_scope()
     attachable(
         anchor, spin, orient,
         size = [
@@ -273,6 +276,7 @@ module top_leg(
     cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h = solid_height * (1 - leg_height_ratios[2]) + eps;
     
+    tag_scope()
     attachable(
         anchor, spin, orient,
         size = [
@@ -612,4 +616,4 @@ module supports(
     }
 }
 
-legs_with_holes("top", supports = true);
+legs_with_holes("middle", supports = true);
