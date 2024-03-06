@@ -137,7 +137,7 @@ module mount_insert(
                 nub_bevel_bottom = 0.8,
                 nub_bevel_top = 0.8,
                 nub_height = 0.6,
-                nub_thickness = 0.6,
+                nub_thickness = 0.6 + 0.2, // Make the mask a bit thicker so there's flexibility to print posts with more snap
                 chamfer1 = 0,
                 chamfer2 = -1,
             )

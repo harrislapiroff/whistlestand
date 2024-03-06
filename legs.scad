@@ -449,7 +449,7 @@ module legs_with_holes (
             }
             // Penny holes
             tag("holes")
-            position(BOTTOM + RIGHT)
+            position(RIGHT)
             up(floor_h) {
                 for (i = [0 : 1 : n - 3])
                 left((node_spread + node_d) / 2 + i * node_spread)
