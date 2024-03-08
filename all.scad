@@ -5,9 +5,9 @@ use <mount.scad>
 use <test_block.scad>
 use <legs.scad>
 
-/* [Parts] */
-// Which parts to render
-parts = "all"; // ["all", "mount", "top", "middle", "bottom"]
+/* [part] */
+// Which part to render
+part = "all"; // ["all", "mount", "top", "middle", "bottom"]
 
 /* [Dowel Mount] */
 // Diameter of the "cap" (widest part of the mount)
@@ -18,6 +18,8 @@ cap_h = 12.5;
 post_h = 12;
 // Height of the screw part
 post_d = 25;
+// Diameter of the dowel
+dowel_size = 15.875; // 5/8"
 
 /* [Arms] */
 // Note that one slot is shared between all three arms, so if nodes per arm is set to N, then the number of slots total is N * 3 - 2
@@ -44,14 +46,14 @@ $fa = $preview ? 20 : 1;
 //     chamfer = 1
 // );
 
-if (parts == "all") {
+if (part == "all") {
     back(40)
     mount(
         cap_d = cap_d,
         cap_h = cap_h,
         post_d = post_d,
         post_h = post_h,
-        dowel_size = 5 / 8 * INCH,
+        dowel_size = dowel_size,
         crush_rib_size = 1,
         crush_rib_count = 20,
         tab_thickness = 1,
@@ -99,13 +101,13 @@ if (parts == "all") {
     );
 }
 
-if (parts == "mount") {
+if (part == "mount") {
     mount(
         cap_d = cap_d,
         cap_h = cap_h,
         post_d = post_d,
         post_h = post_h,
-        dowel_size = 5 / 8 * INCH,
+        dowel_size = dowel_size,
         crush_rib_size = 1,
         crush_rib_count = 20,
         tab_thickness = 1,
@@ -114,7 +116,7 @@ if (parts == "mount") {
     );
 }
 
-if (parts == "top") {
+if (part == "top") {
     legs_with_holes(
         "top",
         n = nodes_per_arm,
@@ -128,7 +130,7 @@ if (parts == "top") {
     );
 }
 
-if (parts == "middle") {
+if (part == "middle") {
     legs_with_holes(
         "middle",
         n = nodes_per_arm,
@@ -142,7 +144,7 @@ if (parts == "middle") {
     );
 }
 
-if (parts == "bottom") {
+if (part == "bottom") {
     legs_with_holes(
         "bottom",
         n = nodes_per_arm,
