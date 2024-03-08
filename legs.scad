@@ -367,6 +367,8 @@ magnet_h = 1.5;
 module legs_with_holes (
     leg = "top",
     floor_h = 0.6,
+    // Generate cavities for pennies and magnets
+    internal_cavities = true,
     // Pass thru args
     n = 4,
     node_d = 40,
@@ -381,6 +383,7 @@ module legs_with_holes (
     eps = 0.01,
     anchor, spin, orient
 ) {
+    slop = get_slop();
     usable_height = post_h - floor_h * 2;
     pennies_count = floor(usable_height / penny_h);
     pennies_height = usable_height; // pennies_count * penny_h; 
@@ -447,6 +450,7 @@ module legs_with_holes (
                     orient = orient
                 );
             }
+            if(internal_cavities)
             // Penny holes
             tag("holes")
             position(RIGHT)
@@ -454,8 +458,8 @@ module legs_with_holes (
                 for (i = [0 : 1 : n - 3])
                 left((node_spread + node_d) / 2 + i * node_spread)
                 cyl(
-                    d = penny_d,
-                    h = pennies_height, 
+                    d = penny_d + slop,
+                    h = pennies_height + slop, 
                     anchor = BOTTOM
                 ) {
                     // Magnet holes
@@ -463,8 +467,8 @@ module legs_with_holes (
                     right(sin(45) * (penny_d + magnet_d) / 2)
                     back(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
-                        d = magnet_d,
-                        h = magnet_h, 
+                        d = magnet_d + slop,
+                        h = magnet_h + slop, 
                         anchor = BOTTOM
                     );
 
@@ -472,8 +476,8 @@ module legs_with_holes (
                     right(sin(45) * (penny_d + magnet_d) / 2)
                     back(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
-                        d = magnet_d,
-                        h = magnet_h, 
+                        d = magnet_d + slop,
+                        h = magnet_h + slop, 
                         anchor = TOP
                     );
 
@@ -481,8 +485,8 @@ module legs_with_holes (
                     right(sin(45) * (penny_d + magnet_d) / 2)
                     fwd(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
-                        d = magnet_d,
-                        h = magnet_h, 
+                        d = magnet_d + slop,
+                        h = magnet_h + slop, 
                         anchor = BOTTOM
                     );
 
@@ -490,8 +494,8 @@ module legs_with_holes (
                     right(sin(45) * (penny_d + magnet_d) / 2)
                     fwd(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
-                        d = magnet_d,
-                        h = magnet_h, 
+                        d = magnet_d + slop,
+                        h = magnet_h + slop, 
                         anchor = TOP
                     );
                 }

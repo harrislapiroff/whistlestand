@@ -7,9 +7,11 @@ use <legs.scad>
 
 /* [part] */
 // Which part to render
-part = "all"; // ["all", "mount", "top", "middle", "bottom"]
+part = "all"; // ["all", "mount", "top", "middle", "bottom", "test block"]
 
 /* [Dowel Mount] */
+// Diameter of the dowel
+dowel_size = 15.875; // 5/8"
 // Diameter of the "cap" (widest part of the mount)
 cap_d = 30;
 // Height of the cap
@@ -18,10 +20,12 @@ cap_h = 12.5;
 post_h = 12;
 // Height of the screw part
 post_d = 25;
-// Diameter of the dowel
-dowel_size = 15.875; // 5/8"
 
 /* [Arms] */
+// Generate internal cavities for placement of pennies and 1.5x6mm cylinder magnets
+internal_cavities = false;
+// Generate built-in supports
+supports = true;
 // Note that one slot is shared between all three arms, so if nodes per arm is set to N, then the number of slots total is N * 3 - 2
 nodes_per_arm = 4;
 // Diameter of each node
@@ -37,14 +41,6 @@ $slop = 0.15;
 $fs = $preview ? 2 : 0.5;
 $fa = $preview ? 20 : 1;
 
-// test_block(
-//     cap_d = cap_d,
-//     cap_inset = cap_inset,
-//     post_d = post_d,
-//     post_h = post_h,
-//     pad = 2,
-//     chamfer = 1
-// );
 
 if (part == "all") {
     back(40)
@@ -71,6 +67,8 @@ if (part == "all") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
     );
 
@@ -84,6 +82,8 @@ if (part == "all") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
     );
 
@@ -97,7 +97,20 @@ if (part == "all") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
+    );
+}
+
+if (part == "test block") {
+    test_block(
+        cap_d = cap_d,
+        cap_inset = cap_inset,
+        post_d = post_d,
+        post_h = post_h,
+        pad = 2,
+        chamfer = 1
     );
 }
 
@@ -126,6 +139,8 @@ if (part == "top") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
     );
 }
@@ -140,6 +155,8 @@ if (part == "middle") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
     );
 }
@@ -154,6 +171,8 @@ if (part == "bottom") {
         cap_inset = cap_inset,
         post_d = post_d,
         post_h = post_h,
+        internal_cavities = internal_cavities,
+        supports = supports,
         anchor = BOTTOM,
     );
 }
