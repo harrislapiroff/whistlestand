@@ -52,7 +52,7 @@ module mount_outer (
                 chamfer1 = 1.5,
                 anchor = TOP
             );
-            
+
             // The knurled cap
             cyl(
                 d = cap_d - cap_tex_depth * 2 - slop * 2,
@@ -118,7 +118,7 @@ module mount_insert(
     post_d = 25,
     post_h = 15,
     eps = 0.01,
-    anchor, spin, orient    
+    anchor, spin, orient
 ) {
     slop = get_slop();
     attachable(

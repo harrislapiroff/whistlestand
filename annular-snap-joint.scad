@@ -59,7 +59,7 @@ module snap_nub (
         h = full_h
     ) {
         down(full_h / 2)
-        rotate_extrude() 
+        rotate_extrude()
         right(d / 2)
         polygon([
             [0, 0],

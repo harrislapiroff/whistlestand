@@ -275,7 +275,7 @@ module top_leg(
     solid_height = post_h + cap_inset;
     cutaway_d = node_d + 2 * cutaway_chamfer + 2 * slop;
     cutaway_h = solid_height * (1 - leg_height_ratios[2]) + eps;
-    
+
     tag_scope()
     attachable(
         anchor, spin, orient,
@@ -386,7 +386,7 @@ module legs_with_holes (
     slop = get_slop();
     usable_height = post_h - floor_h * 2;
     pennies_count = floor(usable_height / penny_h);
-    pennies_height = usable_height; // pennies_count * penny_h; 
+    pennies_height = usable_height; // pennies_count * penny_h;
 
     attachable(
         anchor, spin, orient,
@@ -396,7 +396,7 @@ module legs_with_holes (
             post_h + cap_inset
         ]
     ) {
-        
+
         diff("holes") {
             if (leg == "top") {
                 top_leg(
@@ -459,7 +459,7 @@ module legs_with_holes (
                 left((node_spread + node_d) / 2 + i * node_spread)
                 cyl(
                     d = penny_d + slop,
-                    h = pennies_height + slop, 
+                    h = pennies_height + slop,
                     anchor = BOTTOM
                 ) {
                     // Magnet holes
@@ -468,7 +468,7 @@ module legs_with_holes (
                     back(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
                         d = magnet_d + slop,
-                        h = magnet_h + slop, 
+                        h = magnet_h + slop,
                         anchor = BOTTOM
                     );
 
@@ -477,7 +477,7 @@ module legs_with_holes (
                     back(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
                         d = magnet_d + slop,
-                        h = magnet_h + slop, 
+                        h = magnet_h + slop,
                         anchor = TOP
                     );
 
@@ -486,7 +486,7 @@ module legs_with_holes (
                     fwd(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
                         d = magnet_d + slop,
-                        h = magnet_h + slop, 
+                        h = magnet_h + slop,
                         anchor = BOTTOM
                     );
 
@@ -495,7 +495,7 @@ module legs_with_holes (
                     fwd(cos(45) * (penny_d + magnet_d) / 2)
                     cyl(
                         d = magnet_d + slop,
-                        h = magnet_h + slop, 
+                        h = magnet_h + slop,
                         anchor = TOP
                     );
                 }
@@ -572,7 +572,7 @@ module supports(
                 width = support_thickness,
                 closed = true
             );
-            
+
             // Outer support 2
             linear_extrude(height = h - layer_height)
             stroke(
