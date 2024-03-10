@@ -5,7 +5,7 @@ use <mount.scad>
 use <test_block.scad>
 use <legs.scad>
 
-/* [part] */
+/* [Part] */
 // Which part to render
 part = "all"; // ["all", "mount", "top", "middle", "bottom", "test block"]
 
@@ -40,7 +40,6 @@ cap_inset = 1;
 $slop = 0.15;
 $fs = $preview ? 2 : 0.5;
 $fa = $preview ? 20 : 1;
-
 
 if (part == "all") {
     back(40)
