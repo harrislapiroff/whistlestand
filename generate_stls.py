@@ -52,6 +52,9 @@ configurations = [
     Configuration("leg-top-nodes-4", "top", 4, _, 0.15),
     Configuration("leg-middle-nodes-4", "middle", 4, _, 0.15),
     Configuration("leg-bottom-nodes-4", "bottom", 4, _, 0.15),
+    Configuration("leg-top-nodes-3", "top", 3, _, 0.15),
+    Configuration("leg-middle-nodes-3", "middle", 3, _, 0.15),
+    Configuration("leg-bottom-nodes-3", "bottom", 3, _, 0.15),
     Configuration("mount-5_8-in", "mount", _, INCH_5_8, 0.15),
     Configuration("mount-7_16-in", "mount", _, INCH_7_16, 0.15),
 ]
