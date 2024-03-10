@@ -47,7 +47,7 @@ class Configuration:
 _ = 1  # Use this to indicate a parameter doesn't matter for a certain configuration
 
 
-configurations = [ 
+configurations = [
     Configuration("test-block", "test block", _, _, 0.15),
     Configuration("leg-top-nodes-4", "top", 4, _, 0.15),
     Configuration("leg-middle-nodes-4", "middle", 4, _, 0.15),
@@ -55,9 +55,13 @@ configurations = [
     Configuration("leg-top-nodes-3", "top", 3, _, 0.15),
     Configuration("leg-middle-nodes-3", "middle", 3, _, 0.15),
     Configuration("leg-bottom-nodes-3", "bottom", 3, _, 0.15),
+    Configuration("leg-top-nodes-2", "top", 2, _, 0.15),
+    Configuration("leg-middle-nodes-2", "middle", 2, _, 0.15),
+    Configuration("leg-bottom-nodes-2", "bottom", 2, _, 0.15),
     Configuration("mount-5_8-in", "mount", _, INCH_5_8, 0.15),
     Configuration("mount-7_16-in", "mount", _, INCH_7_16, 0.15),
 ]
+
 
 for c in configurations:
     command = ' '.join([
