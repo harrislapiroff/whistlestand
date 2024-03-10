@@ -18,8 +18,10 @@ module mount_outer (
     post_h = 15,
     tab_thickness = 1,
     tab_count = 4,
+    snug = false,
     anchor, spin, orient
 ) {
+
     slop = get_slop();
 
     // Cylinder geometry attachable
@@ -40,7 +42,7 @@ module mount_outer (
             nub_bevel_bottom = 0.8,
             nub_bevel_top = 0.8,
             nub_height = 0.6,
-            nub_thickness = 0.6,
+            nub_thickness = snug ? 0.8 : 0.6,
             ichamfer2 = 0,
             ochamfer2 = -0.6,
         )
@@ -78,6 +80,7 @@ module mount(
     floor_thickness = 2,
     tab_thickness = 1,
     tab_count = 4,
+    snug = false,
     eps = 0.01,
     anchor, spin, orient
 ) {
@@ -96,6 +99,7 @@ module mount(
                 post_h = post_h,
                 tab_thickness = tab_thickness,
                 tab_count = tab_count,
+                snug = snug,
             )
                 tag("socket")
                 position(TOP)
@@ -137,7 +141,7 @@ module mount_insert(
                 nub_bevel_bottom = 0.8,
                 nub_bevel_top = 0.8,
                 nub_height = 0.6,
-                nub_thickness = 0.6 + 0.2, // Make the mask a bit thicker so there's flexibility to print posts with more snap
+                nub_thickness = 0.8, // Make the mask a bit thicker so there's flexibility to print posts with more snap
                 chamfer1 = 0,
                 chamfer2 = -1,
             )

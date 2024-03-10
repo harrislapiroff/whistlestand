@@ -20,6 +20,8 @@ cap_h = 12.5;
 post_h = 12;
 // Height of the screw part
 post_d = 25;
+// Snug snap fit (default is loose)
+snug = false;
 
 /* [Arms] */
 // Generate internal cavities for placement of pennies and 1.5x6mm cylinder magnets
@@ -53,6 +55,7 @@ if (part == "all") {
         crush_rib_count = 20,
         tab_thickness = 1,
         tab_count = 6,
+        snug = snug,
         anchor = BOTTOM,
     );
 
@@ -124,6 +127,7 @@ if (part == "mount") {
         crush_rib_count = 20,
         tab_thickness = 1,
         tab_count = 6,
+        snug = snug,
         anchor = BOTTOM,
     );
 }
